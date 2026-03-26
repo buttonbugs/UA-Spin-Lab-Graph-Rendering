@@ -29,7 +29,7 @@ def plot_data(xpoints, ypoints):
 
     # Add labels and a title
     plt.xlabel("Temperature (K)")
-    plt.ylabel("Exchange bias")
+    plt.ylabel("Exchange bias (Oe)")
     # plt.yscale('log') # Set the y-axis to logarithmic scale
     plt.title("Exchange bias - temperature")
 
