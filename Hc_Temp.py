@@ -25,7 +25,8 @@ def read_data():
 def plot_data(xpoints, ypoints):
 
     # Plot the points and connect with a line
-    plt.plot(xpoints, ypoints, color= "black")
+    plt.plot(xpoints, ypoints, color= "black", marker='s')
+    plt.grid(True)
 
     # Add labels and a title
     plt.xlabel("Temperature (K)")

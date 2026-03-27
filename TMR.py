@@ -25,7 +25,8 @@ def read_data():
 def plot_R(xpoints, ypoints):
 
     # Plot the points and connect with a line
-    plt.plot(xpoints, ypoints, color= "black")
+    plt.plot(xpoints, ypoints, color= "black", marker='s')
+    plt.grid(True)
 
     # Add labels and a title
     plt.xlabel("Applied Field (Oe)")
@@ -41,7 +42,8 @@ def plot_R(xpoints, ypoints):
 def plot_TMR(xpoints, ypoints):
 
     # Plot the points and connect with a line
-    plt.plot(xpoints, ypoints, color= "black")
+    plt.plot(xpoints, ypoints, color= "black", marker='s')
+    plt.grid(True)
 
     # Add labels and a title
     plt.xlabel("Applied Field (Oe)")
