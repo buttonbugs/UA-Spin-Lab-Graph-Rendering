@@ -32,7 +32,7 @@ def plot_data(xpoints, ypoints):
     plt.xlabel("Temperature (K)")
     plt.ylabel("Exchange bias (Oe)")
     # plt.yscale('log') # Set the y-axis to logarithmic scale
-    plt.title("Exchange bias - temperature")
+    # plt.title("Exchange bias - temperature")
 
     plt.savefig(save_graph_file_path, dpi=300, transparent=False, bbox_inches='tight')
 

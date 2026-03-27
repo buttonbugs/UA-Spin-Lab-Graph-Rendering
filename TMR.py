@@ -33,7 +33,7 @@ def plot_R(xpoints, ypoints):
     plt.xlabel("Applied Field (Oe)")
     plt.ylabel("Resistance (Ω)")
     # plt.yscale('log') # Set the y-axis to logarithmic scale
-    plt.title("Resistance - Applied Field")
+    # plt.title("Resistance - Applied Field")
 
     plt.savefig("TMR_R.png", dpi=300, transparent=False, bbox_inches='tight')
 
@@ -50,7 +50,7 @@ def plot_TMR(xpoints, ypoints):
     plt.xlabel("Applied Field (Oe)")
     plt.ylabel("TMR (%)")
     # plt.yscale('log') # Set the y-axis to logarithmic scale
-    plt.title("TMR")
+    # plt.title("TMR")
 
     plt.savefig("TMR_TMR.png", dpi=300, transparent=False, bbox_inches='tight')
 
@@ -67,7 +67,7 @@ def plot_RA(xpoints, ypoints):
     plt.xlabel("Applied Field (Oe)")
     plt.ylabel("RA (MΩ μm$^2$)")
     # plt.yscale('log') # Set the y-axis to logarithmic scale
-    plt.title("RA")
+    # plt.title("RA")
 
     plt.savefig("TMR_RA.png", dpi=300, transparent=False, bbox_inches='tight')
 
