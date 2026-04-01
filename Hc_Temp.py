@@ -17,7 +17,7 @@ def read_data():
     for data_row_str in data_str.split("\n")[1:]:
         data_row = data_row_str.split(separator)
         xpoints.append(float(data_row[2][:-1]))     # [:-1] to remove 'K'
-        ypoints.append(abs(float(data_row[0]) + float(data_row[1])) / 2)    # take the absolute value of the exchange bias
+        ypoints.append((float(data_row[0]) + float(data_row[1])) / 2)    # take the absolute value of the exchange bias
 
     return np.array(xpoints), np.array(ypoints)
 
