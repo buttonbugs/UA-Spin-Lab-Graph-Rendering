@@ -13,9 +13,7 @@ def read_csv_to_json(csv_file_path):
 data = read_csv_to_json(data_path)
 
 data_low_temp = data[3732:10694]
-data_low_temp = [d for d in data_low_temp if d["Magnetic Field (Oe)"] > -2000 and d["Magnetic Field (Oe)"] < 1000]
-
-print(len(data_low_temp))
+data_low_temp = [d for d in data_low_temp if d["Magnetic Field (Oe)"] > -2000 and d["Magnetic Field (Oe)"] < 2000]
 
 H = np.array([d["Magnetic Field (Oe)"] for d in data_low_temp])
 M = np.array([d["Moment (emu)"] for d in data_low_temp])
