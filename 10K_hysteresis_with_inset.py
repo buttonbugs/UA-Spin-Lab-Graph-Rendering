@@ -6,6 +6,8 @@ hysteresis_data_path = "10K_hysteresis.csv"
 save_graph_file_path = "10K_hysteresis_with_inset.png"
 separator = "\t"
 
+sample_volume = 2.788e-7
+
 # Data points
 
 def read_data(data_file_path):
@@ -38,22 +40,23 @@ if __name__ == "__main__":
     hysteresis_data_low_temp = [d for d in hysteresis_data_low_temp if d["Magnetic Field (Oe)"] > -2000 and d["Magnetic Field (Oe)"] < 1000]
 
     H = np.array([d["Magnetic Field (Oe)"] for d in hysteresis_data_low_temp])
-    M = np.array([d["Moment (emu)"] for d in hysteresis_data_low_temp])
+    Moment = np.array([d["Moment (emu)"] for d in hysteresis_data_low_temp])
+    Magnetization = Moment / sample_volume
 
-    ax.scatter(H, M)
+    ax.plot(H, Magnetization, color="black", marker='s')
     ax.set_xlabel('Magnetic Field (Oe)')
-    ax.set_ylabel('Moment (emu)')
+    ax.set_ylabel('Magnetization (emu/cm$^3$)')
     ax.grid(linewidth = 0.3)
     ax.text(0.85, 0.1, "10K", transform=ax.transAxes, fontsize=40, ha='center', va='center')
 
     """ Inset """
-    ax_inset = ax.inset_axes([0.16, 0.58, 0.4, 0.4])
+    ax_inset = ax.inset_axes([0.16, 0.58, 0.45, 0.4])
     xpoints, ypoints = read_data("Hc_Temp_1.txt")
-    ax_inset.plot(xpoints, ypoints, color = "red", marker='s', markersize=3, linewidth = 1)
+    ax_inset.plot(xpoints, ypoints, color = "red", marker='s', markersize=3, linewidth = 1, label="($+$) FC")
 
     xpoints, ypoints = read_data("Hc_Temp_2.txt")
-    ax_inset.plot(xpoints, ypoints, color = "blue", marker='s', markersize=3, linewidth = 1)
-    # plt.legend()      # Show legend
+    ax_inset.plot(xpoints, ypoints, color = "blue", marker='s', markersize=3, linewidth = 1, label="($-$) FC")
+    ax_inset.legend()      # Show legend
     ax_inset.set_xlabel("Temperature (K)")
     ax_inset.set_ylabel("Exchange bias (Oe)")
     ax_inset.set_ylim(-400, 400)
