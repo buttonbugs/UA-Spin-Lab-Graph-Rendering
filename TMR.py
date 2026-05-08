@@ -76,6 +76,7 @@ def plot_RA(xpoints, ypoints):
 
 if __name__ == "__main__":
     field, resistance = read_data()
+    field -= 40.0       # An artifact that comes from the measurement
     plot_R(field, resistance)
     R_p = np.min(resistance)
     plot_TMR(field, (resistance-R_p)/R_p*100)
