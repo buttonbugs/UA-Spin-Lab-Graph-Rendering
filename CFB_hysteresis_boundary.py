@@ -1,0 +1,49 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.mixture import GaussianMixture
+
+'''
+Installation Requirement:
+pip install scikit-learn
+
+'''
+
+sample_volume = 1.334e-7
+
+CFB_hysteresis_data_path = "CFB_hysteresis.txt"
+
+def read_csv_to_json(csv_file_path):
+    df = pd.read_csv(csv_file_path, sep='\t', keep_default_na=False)      # keep_default_na = True: return NaN if empty; keep_default_na = False: return '' if empty
+    return df.to_dict(orient='records')
+
+def get_gmm_peaks(x_values: np.ndarray, num_of_peaks: int = 2, random_state: int = 42):
+    """
+    Generate the position of the two peaks
+
+    Args:
+        x_values (np.ndarray): An 1D numpy array of x values
+        num_of_peaks (int): Num of peaks of the Gaussian mixture
+        random_state (int): The seed for initial random guess
+
+    Returns:
+        np.ndarray: An array of peaks
+    """
+
+    x_column = x_values.reshape(-1, 1)
+    gmm = GaussianMixture(n_components=num_of_peaks, random_state=random_state)
+    gmm.fit(x_column)
+
+    return gmm.means_.flatten()
+
+def draw_CFB_hysteresis():
+    CFB_hysteresis_data = read_csv_to_json(CFB_hysteresis_data_path)
+
+    magnetic_field = np.array([d["Magnetic Field (Oe)"] for d in CFB_hysteresis_data])
+    magnetization = np.array([d["Moment (emu)"] for d in CFB_hysteresis_data]) / sample_volume
+
+    print(get_gmm_peaks(magnetization))
+
+if __name__ == "__main__":
+
+    draw_CFB_hysteresis()
