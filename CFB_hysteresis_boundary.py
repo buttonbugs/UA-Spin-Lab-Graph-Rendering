@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.mixture import GaussianMixture
 
@@ -16,6 +15,45 @@ CFB_hysteresis_data_path = "CFB_hysteresis.txt"
 def read_csv_to_json(csv_file_path):
     df = pd.read_csv(csv_file_path, sep='\t', keep_default_na=False)      # keep_default_na = True: return NaN if empty; keep_default_na = False: return '' if empty
     return df.to_dict(orient='records')
+
+def calculate_charateristic(x_values: np.ndarray, y_values: np.ndarray):
+
+    center_y = np.average(get_gmm_peaks(y_values))
+    get_polygon_horizontal_intersection(x_values, y_values, center_y)
+
+def get_polygon_horizontal_intersection(x: np.ndarray, y: np.ndarray, y_line: float | np.float64):
+    """
+    Calculate the intersection of a polygon and a horizontal line.`
+
+    Args:
+        x (np.ndarray): A numpy array of x values of the polygon.
+        y (np.ndarray): A numpy array of y values of the polygon.
+        y_line (float | np.float64): The y value of the horizontal line.
+
+    Returns:
+        np.ndarray: A numpy array of x values of the intersections in ascending order
+    """
+
+    # Ensure the polygon is closed by appending the first point to the end
+    x = np.append(x, x[0])
+    y = np.append(y, y[0])
+
+    x1 = x[:-1]
+    y1 = y[:-1]
+    x2 = x[1:]
+    y2 = y[1:]
+
+    # Check if (x1, y1) and (x2, y2) are on different side of y_line
+    cross_mask = ((y1 >= y_line) != (y2 >= y_line)) & (y1 != y2)
+
+    x1 = x1[cross_mask]
+    y1 = y1[cross_mask]
+    x2 = x2[cross_mask]
+    y2 = y2[cross_mask]
+
+    x_intersections = x1 + (y_line - y1) * (x2 - x1) / (y2 - y1)
+
+    return np.sort(x_intersections)
 
 def get_gmm_peaks(x_values: np.ndarray, num_of_peaks: int = 2, random_state: int = 42):
     """
@@ -42,7 +80,7 @@ def draw_CFB_hysteresis():
     magnetic_field = np.array([d["Magnetic Field (Oe)"] for d in CFB_hysteresis_data])
     magnetization = np.array([d["Moment (emu)"] for d in CFB_hysteresis_data]) / sample_volume
 
-    print(get_gmm_peaks(magnetization))
+    calculate_charateristic(magnetic_field, magnetization)
 
 if __name__ == "__main__":
 
