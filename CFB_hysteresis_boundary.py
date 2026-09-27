@@ -19,7 +19,17 @@ def read_csv_to_json(csv_file_path):
 def calculate_charateristic(x_values: np.ndarray, y_values: np.ndarray):
 
     center_y = np.average(get_gmm_peaks(y_values))
-    get_polygon_horizontal_intersection(x_values, y_values, center_y)
+    x_intersections = get_polygon_horizontal_intersection(x_values, y_values, center_y)
+
+    if len(x_intersections) > 0:
+        left_x_intersection = x_intersections[0]
+        right_x_intersection = x_intersections[-1]
+    else:
+        average_x = np.average(x_values)
+        left_x_intersection = average_x
+        right_x_intersection = average_x
+
+    return left_x_intersection, right_x_intersection, (right_x_intersection - left_x_intersection) / 2, (right_x_intersection + left_x_intersection) / 2, (np.max(x_values) - np.min(x_values)) / 2
 
 def get_polygon_horizontal_intersection(x: np.ndarray, y: np.ndarray, y_line: float | np.float64):
     """
@@ -80,7 +90,13 @@ def draw_CFB_hysteresis():
     magnetic_field = np.array([d["Magnetic Field (Oe)"] for d in CFB_hysteresis_data])
     magnetization = np.array([d["Moment (emu)"] for d in CFB_hysteresis_data]) / sample_volume
 
-    calculate_charateristic(magnetic_field, magnetization)
+    analysis_results = calculate_charateristic(magnetic_field, magnetization)
+
+    print("Switching Field (Left) (kG)", analysis_results[0])
+    print("Switching Field (Right) (kG)", analysis_results[1])
+    print("Relative Switching Field (kG)", analysis_results[2])
+    print("Exchange Bias (kG)", analysis_results[3])
+    print("Field Range (kG)", analysis_results[4])
 
 if __name__ == "__main__":
 
